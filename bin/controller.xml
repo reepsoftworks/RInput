@@ -1,0 +1,9 @@
+<Root>
+	<ActionSet>
+    <Action name = "moveforward" key="w" button="leftstickup" />
+    <Action name = "movebackward" key="s" button="leftstickdown" />
+    <Action name = "moveleft" key="a" button="leftstickleft" />
+    <Action name = "moveright" key="d" button="leftstickright" />
+    <Action name = "jump" key="space" button="a"/>
+	</ActionSet>
+</Root>
