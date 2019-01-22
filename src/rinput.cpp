@@ -23,8 +23,8 @@ SOFTWARE.
 */
 
 #include <vector>
-#include <Map>
-
+#include <map>
+#include <string>
 #include "rinput.h"
 
 #include "tinyxml2.h"
@@ -42,7 +42,6 @@ namespace RInput
 	void _Init()
 	{
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-		//SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_XBOX, "1");
 
 #ifdef GAMECONTROLLERCONFIG
 		SDL_SetHint(SDL_HINT_GAMECONTROLLERCONFIG, "1");
@@ -243,6 +242,11 @@ namespace RInput
 
 		default:
 			break;
+		}
+
+		if (GetActiveDevice() == CONTROLLER_GAMEPAD)
+		{
+			SDL_GameControllerUpdate();
 		}
 	}
 
@@ -455,6 +459,27 @@ namespace RInput
 			{
 				RInput_KM::ModMousePosition((int)rsX, (int)rsY, false);
 				lasttickmousemove = SDL_GetTicks();
+			}
+		}
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: Send a rumble command to the controller.
+	//-----------------------------------------------------------------------------
+	void RumbleGamePad(const int pPort, Uint16 iLeftMotor, Uint16 iRightMotor, Uint32 iDuration)
+	{
+		if (GetActiveDevice() == CONTROLLER_GAMEPAD)
+		{
+			if (pPort == CONTROLLER_PORT_ALL)
+			{
+				for (int i = 0; i < GetGamePadCount(); i++)
+				{
+					SDL_GameControllerRumble(RInput_GamePad::GetDeviceFromPort((RInput_GamePad::GamePadIndex)i).controller, iLeftMotor, iRightMotor, iDuration);
+				}
+			}
+			else
+			{
+				SDL_GameControllerRumble(RInput_GamePad::GetDeviceFromPort((RInput_GamePad::GamePadIndex)pPort).controller, iLeftMotor, iRightMotor, iDuration);
 			}
 		}
 	}

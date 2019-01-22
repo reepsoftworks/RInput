@@ -31,7 +31,12 @@ SOFTWARE.
 #if defined (_WIN32)
 #include <SDL.h>
 #else
-#include "SDL2/SDL.h"
+	// TODO: Test SDL decs on Linux/MacOS.
+	#if defined(__APPLE__) && defined(__MACH__)
+		#include <SDL2/SDL.h>
+	#else
+		#include "SDL2/SDL.h"
+	#endif
 #endif
 
 #ifdef main
@@ -39,6 +44,7 @@ SOFTWARE.
 #endif 
 
 #include <map>
+#include <string>
 
 extern SDL_Window* actioncontroller_window;
 extern SDL_Event actioncontroller_event;
@@ -122,6 +128,9 @@ namespace RInput_GamePad
 	void FlushAll();
 }
 
+#define RUMBLE_MAX 65535
+#define RUMBLE_HALFMAX RUMBLE_MAX / 2
+
 //-----------------------------------------------------------------------------
 // The access point for the API. 
 //-----------------------------------------------------------------------------
@@ -140,7 +149,6 @@ namespace RInput
 	Controllers_t GetActiveDevice();
 	const char* GetActiveDeviceAsString();
 	const char* GetGamePadDeviceAsString(const int pPort);
-
 	const Sint8 GetGamePadCount();
 
 	void TestEvents(const SDL_Event& pEvent);
@@ -163,10 +171,10 @@ namespace RInput
 	void RegisterAction(const std::string& pActionName, Sint32 iKey, Uint8 iButton, bool bConistant);
 	void ModifyAction(const std::string& pActionName, Sint32 iKey, Uint8 iButton);
 	action_t& GetAction(const std::string& pActionName);
-
 	bool LoadActionsFromFile(const char* pszPath);
 
 	void UpdateGamePadStickAsMouse(const Sint32& pWhich, const Sint8& pAxis);
+	void RumbleGamePad(const int pPort = 0, Uint16 iLeftMotor = RUMBLE_MAX, Uint16 iRightMotor = RUMBLE_MAX, Uint32 iDuration = 1000);
 }
 
 // Keyboard:
@@ -270,14 +278,14 @@ namespace RInput
 #define KEYBOARD_GRAVE KEYBOARD_TILDE
 #define KEYBOARD_EQUALS SDLK_EQUALS
 
-#define KEYBOARD_OPENBRACKET = SDLK_LEFTBRACKET
-#define KEYBOARD_CLOSEBRACKET = SDLK_RIGHTBRACKET
-#define KEYBOARD_BLACKSLASH = SDLK_BACKSLASH
-#define KEYBOARD_SEMICOLON = SDLK_SEMICOLON
-#define KEYBOARD_QUOTES = SDLK_QUOTEDBL
-#define KEYBOARD_COMMA = SDLK_COMMA
-#define KEYBOARD_SLASH = SDLK_SLASH
-#define KEYBOARD_PERIOD = SDLK_PERIOD
+#define KEYBOARD_OPENBRACKET SDLK_LEFTBRACKET
+#define KEYBOARD_CLOSEBRACKET SDLK_RIGHTBRACKET
+#define KEYBOARD_BLACKSLASH SDLK_BACKSLASH
+#define KEYBOARD_SEMICOLON SDLK_SEMICOLON
+#define KEYBOARD_QUOTES SDLK_QUOTEDBL
+#define KEYBOARD_COMMA SDLK_COMMA
+#define KEYBOARD_SLASH SDLK_SLASH
+#define KEYBOARD_PERIOD SDLK_PERIOD
 
 // Mouse:
 #define MOUSE_BUTTON_LEFT SDLK_AUDIOFASTFORWARD + 1
@@ -292,7 +300,6 @@ namespace RInput
 #define MOUSE_BUTTON_WHEELUP_NAME "mousewheelup"
 #define MOUSE_BUTTON_WHEELDOWN MOUSE_BUTTON_WHEELUP + 1
 #define MOUSE_BUTTON_WHEELDOWN_NAME "mousewheeldown"
-
 
 // GamePad:
 #define GAMEPAD_BUTTON_A SDL_CONTROLLER_BUTTON_A
@@ -338,6 +345,7 @@ namespace RInput
 #define GAMEPAD_BUTTON_RSTICK_RIGHT 25
 #define GAMEPAD_BUTTON_RSTICK_RIGHT_NAME "rightstickright"
 
+#define CONTROLLER_PORT_ALL -1
 #define CONTROLLER_PORT_ONE RInput_GamePad::ENUM_GAMEPAD_ONE
 #define CONTROLLER_PORT_TWO RInput_GamePad::ENUM_GAMEPAD_TWO
 #define CONTROLLER_PORT_THREE RInput_GamePad::ENUM_GAMEPAD_THREE

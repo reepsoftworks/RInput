@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <map>
+#include <string>
 #include "rinput.h"
 
 namespace RInput_KM
@@ -54,61 +56,6 @@ namespace RInput_KM
 		if (pKey == MOUSE_BUTTON_WHEELDOWN) return (float)OnMouseWheelDown();
 		return (float)mButton[pKey];
 	}
-
-#if 0 
-	bool keyIsAlreadyPressed = false;
-	const bool KeyHit(const int pKey)
-	{
-		if (bEnabled == false)
-			return false;
-
-		bool rightkeyhit = false;
-
-		if (bKeyDown)
-		{
-			if (!keyIsAlreadyPressed)
-			{
-				if (ButtonDown((pKey), ENUM_KEYBOARD))
-				{
-					rightkeyhit = true;
-					keyIsAlreadyPressed = true;
-				}
-			}
-		}
-		else
-		{
-			keyIsAlreadyPressed = false;
-		}
-
-		if (rightkeyhit)
-		{
-			rightkeyhit = false;
-			return true;
-		}
-		rightkeyhit = false;
-		return false;
-	}
-
-	// BROKEN:
-	bool mouseIsAlreadyPressed = false;
-	char lastmousedown = -1;
-	const bool MouseHit(const int iButton)
-	{
-		if (bEnabled == false)
-			return false;
-
-
-		return false;
-	}
-
-	const bool ButtonHit(const long pKey, const KMIndex& iIndex)
-	{
-		if (iIndex == ENUM_MOUSE) return MouseHit(pKey);
-		if (iIndex == ENUM_KEYBOARD) return KeyHit((int)pKey);
-		return false;
-	}
-
-#endif
 
 	//-----------------------------------------------------------------------------
 	// Purpose: 

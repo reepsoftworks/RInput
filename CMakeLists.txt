@@ -25,9 +25,9 @@ include_directories(src)
 file(GLOB_RECURSE rinput_SOURCES "src/*.cpp" "test/*.cpp")
 
 if (STATICLIB)
-add_library (actioncontroller ${rinput_SOURCES})
+add_library (rinput ${rinput_SOURCES})
 else()
-add_executable (actioncontroller ${rinput_SOURCES})
+add_executable (rinput ${rinput_SOURCES})
 endif()
 
-target_link_libraries(actioncontroller ${SDL2_LIBRARY})
+target_link_libraries(rinput ${SDL2_LIBRARY})

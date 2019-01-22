@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <map>
+#include <string>
 #include "rinput.h"
 
 namespace RInput_GamePad
@@ -80,7 +82,12 @@ namespace RInput_GamePad
 	//-----------------------------------------------------------------------------
 	gamepad_t GetDeviceFromPort(const GamePadIndex& pPort)
 	{
-		return m_arrayControllers[(Sint32)pPort];
+		if (m_arrayControllers[(Sint32)pPort].controller != NULL)
+		{
+			return m_arrayControllers[(Sint32)pPort];
+		}
+
+		return m_arrayControllers[0];
 	}
 
 	//-----------------------------------------------------------------------------
@@ -340,35 +347,6 @@ namespace RInput_GamePad
 		//printf("%f\n", perc);
 		return perc;
 	}
-
-	// Moves the mouse with a joystick.
-	/*
-	Uint32 lasttickmousemove = 0;
-	void ModMousePositionWithSick(const Sint32& pWhich, const Sint8& pAxis)
-	{
-		float rsX, rsY;
-
-		if (pAxis == GAMEPAD_AXIS_LSTICK)
-		{
-			rsX = RInput_GamePad::GetAxisFloat(pWhich, SDL_CONTROLLER_AXIS_LEFTX);
-			rsY = RInput_GamePad::GetAxisFloat(pWhich, SDL_CONTROLLER_AXIS_LEFTY);
-		}
-		else
-		{
-			rsX = RInput_GamePad::GetAxisFloat(pWhich, SDL_CONTROLLER_AXIS_RIGHTX);
-			rsY = RInput_GamePad::GetAxisFloat(pWhich, SDL_CONTROLLER_AXIS_RIGHTY);
-		}
-
-		if ((int)rsX != 0 || (int)rsY != 0)
-		{
-			if (SDL_GetTicks() > lasttickmousemove)
-			{
-				KM::ModMousePosition((int)rsX, (int)rsY, false);
-				lasttickmousemove = SDL_GetTicks();
-			}
-		}
-	}
-	*/
 
 	//-----------------------------------------------------------------------------
 	// Purpose: 
