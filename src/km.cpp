@@ -35,7 +35,7 @@ namespace RInput_KM
 	bool bEnabled;
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Record the state of the button.
 	//-----------------------------------------------------------------------------
 	void SimulateButton(const Sint32& pKey, bool bDown)
 	{
@@ -46,9 +46,9 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Return if the button is currently down.
 	//-----------------------------------------------------------------------------
-	const float ButtonDown(const Sint32& pKey)
+	float ButtonDown(const Sint32& pKey)
 	{
 		if (bEnabled == false) 0.0f;
 
@@ -58,7 +58,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Set the mouse position.
 	//-----------------------------------------------------------------------------
 	int mouseX = 0;
 	int mouseY = 0;
@@ -78,7 +78,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Modify the mouse position based on it's current location.
 	//-----------------------------------------------------------------------------
 	void ModMousePosition(const int x, const int y, bool bGlobal)
 	{
@@ -88,7 +88,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Update the mouse pos values.
 	//-----------------------------------------------------------------------------
 	void UpdateMousePosition()
 	{
@@ -104,11 +104,11 @@ namespace RInput_KM
 		mouseY = y;
 	}
 
-	const int GetMouseX() { return mouseX; }
-	const int GetMouseY() { return mouseY; }
+	int GetMouseX() { return mouseX; }
+	int GetMouseY() { return mouseY; }
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Show the mouse.
 	//-----------------------------------------------------------------------------
 	void ShowMouse()
 	{
@@ -116,7 +116,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Hide the mouse.
 	//-----------------------------------------------------------------------------
 	void HideMouse()
 	{
@@ -124,7 +124,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Set the wheel position.
 	//-----------------------------------------------------------------------------
 	int iMouseWheelPos = 0;
 	void SetMouseWheelPosition(const int y)
@@ -133,9 +133,9 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: On wheel up.
 	//-----------------------------------------------------------------------------
-	const bool OnMouseWheelUp()
+	bool OnMouseWheelUp()
 	{
 		bool b = false;
 		if (iMouseWheelPos >= 1)
@@ -148,9 +148,9 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: On wheel down.
 	//-----------------------------------------------------------------------------
-	const bool OnMouseWheelDown()
+	bool OnMouseWheelDown()
 	{
 		bool b = false;
 		if (iMouseWheelPos < 0)
@@ -163,7 +163,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Get the string name of the button.
 	//-----------------------------------------------------------------------------
 	const char* GetButtonName(const Sint32& pButton)
 	{
@@ -178,9 +178,9 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Get the index of the button.
 	//-----------------------------------------------------------------------------
-	const Sint32 GetButtonIndex(const char* pButton)
+	Sint32 GetButtonIndex(const char* pButton)
 	{
 		std::string s(pButton);
 		if (s == MOUSE_BUTTON_LEFT_NAME) return MOUSE_BUTTON_LEFT;
@@ -195,13 +195,13 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Toggle the allowence of the keyboard and mouse.
 	//-----------------------------------------------------------------------------
 	void Enable()	{ bEnabled = true;  }
 	void Disable()	{ bEnabled = false; }
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Flush only the keyboard.
 	//-----------------------------------------------------------------------------
 	void FlushKeyboard()
 	{
@@ -211,7 +211,7 @@ namespace RInput_KM
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Flush only the mouse.
 	//-----------------------------------------------------------------------------
 	void FlushMouse()
 	{
@@ -220,9 +220,8 @@ namespace RInput_KM
 		mButton.clear();
 	}
 
-
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Flush both the keyboard and mouse.
 	//-----------------------------------------------------------------------------
 	void Flush()
 	{

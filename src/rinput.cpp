@@ -43,7 +43,7 @@ namespace RInput
 	{
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-#ifdef GAMECONTROLLERCONFIG
+#ifdef USE_RINPUT_GAMECONTROLLERCONFIG
 		SDL_SetHint(SDL_HINT_GAMECONTROLLERCONFIG, "1");
 		if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) >= 0)
 		{
@@ -169,7 +169,7 @@ namespace RInput
 	// Purpose: Returns the amount of gamepads connected.
 	//-----------------------------------------------------------------------------
 	Sint8 gamepad_count = 0;
-	const Sint8 GetGamePadCount()
+	Sint8 GetGamePadCount()
 	{
 		return gamepad_count;
 	}
@@ -298,7 +298,7 @@ namespace RInput
 	//-----------------------------------------------------------------------------
 	// Purpose: Test the action state.
 	//-----------------------------------------------------------------------------
-	const float GetActionInput(action_t& pButton)
+	float GetActionInput(action_t& pButton)
 	{
 		float t = 0.0f;
 
@@ -385,14 +385,11 @@ namespace RInput
 		XMLElement *pActionSetElement = pRoot->FirstChildElement("ActionSet");
 		if (pActionSetElement == nullptr) return XML_ERROR_PARSING_ELEMENT;
 
-		//int ActionSetCount = 0;
-
 		while (pActionSetElement != nullptr)
 		{
 			//const char* pszValSet = pActionSetElement->Attribute("name");
 			//if (pszValSet == nullptr) return XML_ERROR_PARSING_ATTRIBUTE;
 			//printf("Action Set: %s\n", pszValSet);
-
 
 			XMLElement *pActionElement = pActionSetElement->FirstChildElement("Action");
 			if (pActionElement == nullptr) return XML_ERROR_PARSING_ELEMENT;
@@ -410,14 +407,19 @@ namespace RInput
 				pActionElement = pActionElement->NextSiblingElement("Action");
 			}
 
-			//ActionSetCount++;
 			pActionSetElement = pRoot->NextSiblingElement("ActionSet");
 		}
 
-		//printf("ActionSetCount: %d\n", ActionSetCount);
-
 		return XML_SUCCESS;
 	}
+
+	// TODO: Create a way to write XML documents with registered actions.
+	/*
+	XMLError _WriteFile(const char* pszPath)
+	{
+		return XML_NO_ATTRIBUTE;
+	}
+	*/
 
 	//-----------------------------------------------------------------------------
 	// Purpose: Bool function to call the xml phrasing.

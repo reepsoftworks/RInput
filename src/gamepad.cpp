@@ -31,7 +31,7 @@ namespace RInput_GamePad
 	gamepad_t m_arrayControllers[GamePadIndex::ENUM_GAMEPAD_MAX];
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Assign each device to a port.
 	//-----------------------------------------------------------------------------
 	void Connect(const Sint32& pWhich)
 	{
@@ -62,7 +62,7 @@ namespace RInput_GamePad
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Disconnect the device from a port.
 	//-----------------------------------------------------------------------------
 	void Disconnect(const Sint32& pWhich)
 	{
@@ -91,21 +91,20 @@ namespace RInput_GamePad
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Record the state of the button.
 	//-----------------------------------------------------------------------------
 	void SimulateButton(const Sint32& pWhich, const Uint8& pButton, bool bDown)
 	{
 		if (m_arrayControllers[pWhich].controller != nullptr && m_arrayControllers[pWhich].bEnabled == true)
 		{
 			m_arrayControllers[pWhich].mControllerButtons[pButton] = bDown;
-			//m_arrayControllers[pWhich].bButtonDown = bDown;
 		}
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Return if the button is currently down.
 	//-----------------------------------------------------------------------------
-	const float ButtonDown(const Uint8& pButton, const GamePadIndex& iIndex)
+	float ButtonDown(const Uint8& pButton, const GamePadIndex& iIndex)
 	{
 		float val = 0.0f;
 		if (m_arrayControllers[(Sint32)iIndex].bEnabled == false) return val;
@@ -166,66 +165,8 @@ namespace RInput_GamePad
 		return val;
 	}
 
-	/*
-	const bool ButtonUp(const Uint8& pButton, const GamePadIndex& iIndex)
-	{
-		if (m_arrayControllers[(Sint32)iIndex].bEnabled == false) return true;
-		return !m_arrayControllers[(Sint32)iIndex].mControllerButtons[pButton];
-	}
-
-	const bool ButtonDownAny(const Uint8& pButton)
-	{
-		bool b = false;
-		for (Sint32 i = 0; i < ENUM_GAMEPAD_MAX; i++)
-		{
-			if (m_arrayControllers[i].controller != nullptr)
-			{
-				if (m_arrayControllers[i].mControllerButtons[pButton] == true)
-				{
-					b = true;
-					break;
-				}
-			}
-		}
-
-		return b;
-	}
-	*/
-
-#if 0
-	const bool ButtonHit(const Uint8& iButton, const GamePadIndex& iIndex)
-	{
-		if (m_arrayControllers[(Sint32)iIndex].bEnabled == false) return false;
-
-		bool rightkeyhit = false;
-		if (m_arrayControllers[(Sint32)iIndex].bButtonDown)
-		{
-			if (m_arrayControllers[(Sint32)iIndex].btnIsAlreadyPressed == false)
-			{
-				if (ButtonDown(iButton, iIndex))
-				{
-					rightkeyhit = true;
-					m_arrayControllers[(Sint32)iIndex].btnIsAlreadyPressed = true;
-				}
-			}
-		}
-		else
-		{
-			m_arrayControllers[(Sint32)iIndex].btnIsAlreadyPressed = false;
-		}
-
-		if (rightkeyhit)
-		{
-			rightkeyhit = false;
-			return true;
-		}
-		rightkeyhit = false;
-		return false;
-	}
-#endif
-
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Get the string name of the button.
 	//-----------------------------------------------------------------------------
 	const char* GetButtonName(const Uint8& pButton)
 	{
@@ -245,7 +186,10 @@ namespace RInput_GamePad
 		return SDL_GameControllerGetStringForButton((SDL_GameControllerButton)pButton);
 	}
 
-	const Uint8 GetButtonIndex(const char* pButton)
+	//-----------------------------------------------------------------------------
+	// Purpose: Get the index of the button.
+	//-----------------------------------------------------------------------------
+	Uint8 GetButtonIndex(const char* pButton)
 	{
 		std::string s(pButton);
 		if (s == GAMEPAD_BUTTON_LTRIGGER_NAME) return GAMEPAD_BUTTON_LTRIGGER;
@@ -274,9 +218,9 @@ namespace RInput_GamePad
 	*/
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Get the axis value aiding in turning the axis' into buttons.
 	//-----------------------------------------------------------------------------
-	const Sint16 GetAxisValue(const Sint32& pWhich, const Uint32& pAxis, bool bFlip)
+	Sint16 GetAxisValue(const Sint32& pWhich, const Uint32& pAxis, bool bFlip)
 	{
 		Sint16 val = SDL_GameControllerGetAxis(m_arrayControllers[pWhich].controller, (SDL_GameControllerAxis)pAxis);
 		if (pAxis == SDL_CONTROLLER_AXIS_TRIGGERLEFT)
@@ -349,7 +293,7 @@ namespace RInput_GamePad
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Flush a controller's inputs.
 	//-----------------------------------------------------------------------------
 	void Flush(const Sint32& pWhich)
 	{
@@ -358,14 +302,12 @@ namespace RInput_GamePad
 			if (m_arrayControllers[pWhich].controller != nullptr)
 			{
 				m_arrayControllers[pWhich].mControllerButtons.clear();
-				//m_arrayControllers[pWhich].bButtonDown = false;
-				//m_arrayControllers[pWhich].btnIsAlreadyPressed = false;
 			}
 		}
 	}
 
 	//-----------------------------------------------------------------------------
-	// Purpose: 
+	// Purpose: Flush all controller input.
 	//-----------------------------------------------------------------------------
 	void FlushAll()
 	{

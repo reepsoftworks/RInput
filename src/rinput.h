@@ -55,7 +55,7 @@ extern SDL_Event actioncontroller_event;
 namespace RInput_KM
 {
 	void SimulateButton(const Sint32& pKey, bool bDown);
-	const float ButtonDown(const Sint32& pKey);
+	float ButtonDown(const Sint32& pKey);
 	
 	void ShowMouse();
 	void HideMouse();
@@ -63,17 +63,17 @@ namespace RInput_KM
 	void ModMousePosition(const int x, const int y, bool bGlobal = false);
 	void UpdateMousePosition();
 	void SimulateMouse(const int x, const int y);
-	const int GetMouseX();
-	const int GetMouseY();
+	int GetMouseX();
+	int GetMouseY();
 	void SetMouseWheelPosition(const int y);
-	const bool OnMouseWheelUp();
-	const bool OnMouseWheelDown();
+	bool OnMouseWheelUp();
+	bool OnMouseWheelDown();
 
 	// Returns the long to a character.
 	const char* GetButtonName(const Sint32& pButton);
 
 	// Returns the character to a long
-	const Sint32 GetButtonIndex(const char* pButton);
+	Sint32 GetButtonIndex(const char* pButton);
 
 	void Enable();
 	void Disable();
@@ -114,14 +114,14 @@ namespace RInput_GamePad
 	// Digital input:
 	void SimulateButton(const Sint32& pWhich, const Uint8& pButton, bool bDown);
 
-	const float ButtonDown(const Uint8& pButton, const GamePadIndex& iIndex = ENUM_GAMEPAD_ONE);
+	float ButtonDown(const Uint8& pButton, const GamePadIndex& iIndex = ENUM_GAMEPAD_ONE);
 
 	const char* GetButtonName(const Uint8& pButton);
-	const Uint8 GetButtonIndex(const char* pButton);
+	Uint8 GetButtonIndex(const char* pButton);
 
 	// Analog input:
 	void UpdateAxisMotions(const Sint32& pWhich, const Uint32& pAxis);
-	const Sint16 GetAxisValue(const Sint32& pWhich, const Uint32& pAxis, bool bFlip = false);
+	Sint16 GetAxisValue(const Sint32& pWhich, const Uint32& pAxis, bool bFlip = false);
 	const float GetAxisFloat(const Sint32& pWhich, const Uint32& pAxis, bool bFlip = false);
 
 	void Flush(const Sint32& pWhich);
@@ -149,7 +149,7 @@ namespace RInput
 	Controllers_t GetActiveDevice();
 	const char* GetActiveDeviceAsString();
 	const char* GetGamePadDeviceAsString(const int pPort);
-	const Sint8 GetGamePadCount();
+	Sint8 GetGamePadCount();
 
 	void TestEvents(const SDL_Event& pEvent);
 	void PollEvents(); // <- Use this function if you're not using SDL event polling.
@@ -167,7 +167,7 @@ namespace RInput
 
 	} action_t;
 
-	const float GetActionInput(action_t& pButton);
+	float GetActionInput(action_t& pButton);
 	void RegisterAction(const std::string& pActionName, Sint32 iKey, Uint8 iButton, bool bConistant);
 	void ModifyAction(const std::string& pActionName, Sint32 iKey, Uint8 iButton);
 	action_t& GetAction(const std::string& pActionName);
