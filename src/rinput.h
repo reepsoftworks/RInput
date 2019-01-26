@@ -29,14 +29,9 @@ SOFTWARE.
 #endif
 
 #if defined (_WIN32)
-#include <SDL.h>
+	#include <SDL.h>
 #else
-	// TODO: Test SDL decs on Linux/MacOS.
-	#if defined(__APPLE__) && defined(__MACH__)
-		#include <SDL2/SDL.h>
-	#else
-		#include "SDL2/SDL.h"
-	#endif
+	#include <SDL2/SDL.h>
 #endif
 
 #ifdef main
@@ -174,8 +169,16 @@ namespace RInput
 	bool LoadActionsFromFile(const char* pszPath);
 
 	void UpdateGamePadStickAsMouse(const Sint32& pWhich, const Sint8& pAxis);
+	
+	#ifndef RINPUT_NO_RUMBLE
 	void RumbleGamePad(const int pPort = 0, Uint16 iLeftMotor = RUMBLE_MAX, Uint16 iRightMotor = RUMBLE_MAX, Uint32 iDuration = 1000);
+	#endif
 }
+
+// TEMP: Fixes for older SDL2
+//#ifndef SDLK_AUDIOFASTFORWARD 
+//#define SDLK_AUDIOFASTFORWARD SDLK_SLEEP
+//#endif
 
 // Keyboard:
 #define KEYBOARD_A SDLK_a

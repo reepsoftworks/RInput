@@ -29,7 +29,6 @@ SOFTWARE.
 
 #include "tinyxml2.h"
 using namespace tinyxml2;
-#define XMLCheckResult(x) if (x != XML_SUCCESS) { printf("Error: %i\n", x); return x;}
 
 SDL_Window* actioncontroller_window;
 SDL_Event actioncontroller_event;
@@ -41,8 +40,13 @@ namespace RInput
 	//-----------------------------------------------------------------------------
 	void _Init()
 	{
-		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+#ifndef _WIN32
+		// On my rasppi, I'm not getting any controller feedback unless this is enabled.
+		// With Win32, this isn't needed for XInput. Include/Remove based on your app.
+		SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+#endif
 
+		// Define this pre-processor if you have some odd controller or custom config.
 #ifdef USE_RINPUT_GAMECONTROLLERCONFIG
 		SDL_SetHint(SDL_HINT_GAMECONTROLLERCONFIG, "1");
 		if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) >= 0)
@@ -376,7 +380,7 @@ namespace RInput
 		XMLDocument xmlDoc;
 		XMLError eResult = xmlDoc.LoadFile(pszPath);
 
-		XMLCheckResult(eResult);
+		if (eResult != XML_SUCCESS) return eResult;
 
 		XMLNode* pRoot = xmlDoc.FirstChild();
 		if (pRoot == nullptr) return XML_ERROR_FILE_READ_ERROR;
@@ -468,6 +472,7 @@ namespace RInput
 	//-----------------------------------------------------------------------------
 	// Purpose: Send a rumble command to the controller.
 	//-----------------------------------------------------------------------------
+	#ifndef RINPUT_NO_RUMBLE
 	void RumbleGamePad(const int pPort, Uint16 iLeftMotor, Uint16 iRightMotor, Uint32 iDuration)
 	{
 		if (GetActiveDevice() == CONTROLLER_GAMEPAD)
@@ -485,4 +490,5 @@ namespace RInput
 			}
 		}
 	}
+	#endif
 }

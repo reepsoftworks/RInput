@@ -26,6 +26,11 @@ SOFTWARE.
 #include <string>
 #include "rinput.h"
 
+// TEMP: Fix for older SDL2
+#ifndef SDL_MAX_SINT16
+#define SDL_MAX_SINT16  ((Sint16)0x7FFF)        /* 32767 */
+#endif
+
 namespace RInput_GamePad
 {
 	gamepad_t m_arrayControllers[GamePadIndex::ENUM_GAMEPAD_MAX];
