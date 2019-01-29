@@ -61,9 +61,8 @@ namespace RInput
 		{
 			printf("Error: Failed to initialize SDL_INIT_GAMECONTROLLER! SDL_Error: %s\n", SDL_GetError());
 		}
-#else
-		SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
 #endif
+        SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
 		SetActiveDevice(CONTROLLER_KEYBOARDMOUSE);
 		RInput_KM::Enable();
 	}
